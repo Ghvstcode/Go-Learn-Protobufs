@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"log"
 
+	"github.com/golang/protobuf/jsonpb"
 	"github.com/golang/protobuf/proto"
 
 	"github.com/GhvstCode/ProtoBuf/src/simple"
@@ -14,11 +15,35 @@ func main() {
 	sm := doSimple()
 
 	sm2 := &example_simple.SimpleMessage{}
+	sm3 := &example_simple.SimpleMessage{}
 	writeToFile("simple.bin", sm)
 	readFromFile("simple.bin", sm2)
 	fmt.Println(sm2)
+
+	jsonstring := toJson(sm)
+	fromJson(jsonstring, sm3)
+	fmt.Println(jsonstring)
+	fmt.Println("Succesfully created proto struct :", sm3)
 }
 
+func toJson(pb proto.Message) string{
+	marshaler := jsonpb.Marshaler{}
+	out, err := marshaler.MarshalToString(pb)
+	if err != nil {
+		log.Fatalln("Unable to marshalthe stuff", err)
+		return ""
+	}
+
+	return out
+}
+
+func fromJson(in string, pb proto.Message) error{
+	if err := jsonpb.UnmarshalString(in, pb); err != nil {
+		log.Fatal("Cant serialize data to bytes", err)
+		return err
+	}
+	return nil
+}
 func writeToFile(fname string, pb proto.Message) error{
 	out, err := proto.Marshal(pb)
 	if err !=  nil {
