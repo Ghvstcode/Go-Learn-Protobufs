@@ -8,24 +8,32 @@ import (
 	"github.com/golang/protobuf/jsonpb"
 	"github.com/golang/protobuf/proto"
 
+	enumpb "github.com/GhvstCode/ProtoBuf/src/enum_example"
 	"github.com/GhvstCode/ProtoBuf/src/simple"
 )
 
 func main() {
 	sm := doSimple()
 
-	sm2 := &example_simple.SimpleMessage{}
-	sm3 := &example_simple.SimpleMessage{}
-	writeToFile("simple.bin", sm)
-	readFromFile("simple.bin", sm2)
-	fmt.Println(sm2)
-
-	jsonstring := toJson(sm)
-	fromJson(jsonstring, sm3)
-	fmt.Println(jsonstring)
-	fmt.Println("Succesfully created proto struct :", sm3)
+	//sm2 := &example_simple.SimpleMessage{}
+	//sm3 := &example_simple.SimpleMessage{}
+	//writeToFile("simple.bin", sm)
+	//readFromFile("simple.bin", sm2)
+	//fmt.Println(sm2)
+	//
+	//jsonstring := toJson(sm)
+	//fromJson(jsonstring, sm3)
+	//fmt.Println(jsonstring)
+	//fmt.Println("Succesfully created proto struct :", sm3)
+	doEnum()
 }
-
+func doEnum(){
+	em := enumpb.EnumMessage{
+		Id: 42,
+		DayOfTheWeek: enumpb.DayOfTheWeek_FRIDAY,
+	}
+	fmt.Println(em)
+}
 func toJson(pb proto.Message) string{
 	marshaler := jsonpb.Marshaler{}
 	out, err := marshaler.MarshalToString(pb)
