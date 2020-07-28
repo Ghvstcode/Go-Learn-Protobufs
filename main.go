@@ -8,12 +8,13 @@ import (
 	"github.com/golang/protobuf/jsonpb"
 	"github.com/golang/protobuf/proto"
 
+	complex_pb_go "github.com/GhvstCode/ProtoBuf/src/complex"
 	enumpb "github.com/GhvstCode/ProtoBuf/src/enum_example"
 	"github.com/GhvstCode/ProtoBuf/src/simple"
 )
 
 func main() {
-	sm := doSimple()
+	//sm := doSimple()
 
 	//sm2 := &example_simple.SimpleMessage{}
 	//sm3 := &example_simple.SimpleMessage{}
@@ -26,7 +27,28 @@ func main() {
 	//fmt.Println(jsonstring)
 	//fmt.Println("Succesfully created proto struct :", sm3)
 	doEnum()
+	doComplex()
 }
+func doComplex(){
+	cm := complex_pb_go.ComplexMessage{
+		OneDummy:     &complex_pb_go.DummyMessage{
+			Id:   1,
+			Name: "firstMessage",
+		},
+		MultipleDummy: []*complex_pb_go.DummyMessage{
+			&complex_pb_go.DummyMessage{
+				Id:   2,
+				Name: "secondMessage",
+			},
+			&complex_pb_go.DummyMessage{
+				Id:   3,
+				Name: "thirdMessage",
+			},
+		},
+	}
+	fmt.Println(cm)
+}
+
 func doEnum(){
 	em := enumpb.EnumMessage{
 		Id: 42,
